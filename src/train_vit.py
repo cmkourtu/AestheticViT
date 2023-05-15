@@ -24,7 +24,6 @@ class AestheticDataset(Dataset):
         return image, label
 
 # Load the dataset and preprocess it
-# Replace these with the appropriate file paths and labels for your dataset
 train_image_paths, val_image_paths, test_image_paths = ..., ..., ...
 train_labels, val_labels, test_labels = ..., ..., ...
 
