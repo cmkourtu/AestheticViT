@@ -6,17 +6,36 @@ from torchvision import transforms
 from PIL import Image
 from timm import create_model
 
-# Create a custom dataset class
 class AestheticDataset(Dataset):
+    """
+    Custom Dataset for loading the aesthetic images and labels.
+
+    Args:
+        image_paths (list): List of paths to images.
+        labels (list): List of labels corresponding to the images.
+        transform (torchvision.transforms.Compose): Transformations to be applied on the images.
+    """
     def __init__(self, image_paths, labels, transform=None):
         self.image_paths = image_paths
         self.labels = labels
         self.transform = transform
 
     def __len__(self):
+        """
+        Returns the total number of samples in this dataset.
+        """
         return len(self.image_paths)
 
     def __getitem__(self, idx):
+        """
+        Fetches the sample at the given index in the dataset.
+
+        Args:
+            idx (int): The index to fetch sample from.
+
+        Returns:
+            tuple: Contains the image and its corresponding label.
+        """
         image = Image.open(self.image_paths[idx])
         if self.transform:
             image = self.transform(image)
@@ -90,5 +109,3 @@ vit_model.eval()
 with torch.no_grad():
     for images, labels in test_loader:
         images, labels = images.to(device), labels.to(device)
-       
-
