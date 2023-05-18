@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyc
+*.egg-info/
+dist/
+build/
+*.egg
+*.log
+*.csv
+*.json
+*.yaml
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+
+# Data
+data/AVA_dataset/
+data/AVA_preprocessed/
+
+# Model Checkpoints
+*.pt
+*.pth
+*.tar
