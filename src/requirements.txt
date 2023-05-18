@@ -1,4 +1,4 @@
-torch>=1.10.0
+torch>=1.13.1
 torchvision>=0.11.1
 timm>=0.4.12
 Pillow>=8.4.0
