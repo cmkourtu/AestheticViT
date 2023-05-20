@@ -22,12 +22,11 @@ class AestheticDataset(Dataset):
         image = Image.open(self.image_paths[idx])
         if self.transform:
             image = self.transform(image)
-        label = torch.tensor(float(self.image_paths[idx].split('/')[-1].split('.')[0])) # Assumes the label is in the filename
+        label = torch.tensor(float(self.image_paths[idx].split('/')[-1].split('.')[0]))  # Assumes the label is in the filename
         return image, label
 
 
 if __name__ == '__main__':
-
     parser = argparse.ArgumentParser()
 
     # Hyperparameters are described here
@@ -36,20 +35,24 @@ if __name__ == '__main__':
     parser.add_argument('--batch_size', type=int, default=64)
 
     # SageMaker specific arguments. Defaults are set in the environment variables.
-    parser.add_argument('--output_data_dir', type=str, default=os.environ['SM_OUTPUT_DATA_DIR'])
-    parser.add_argument('--model_dir', type=str, default=os.environ['SM_MODEL_DIR'])
-    parser.add_argument('--train', type=str, default=os.environ['SM_CHANNEL_TRAIN'])
-    parser.add_argument('--val', type=str, default=os.environ['SM_CHANNEL_VAL'])
-    parser.add_argument('--test', type=str, default=os.environ['SM_CHANNEL_TEST'])
+    parser.add_argument('--output_data_dir', type=str, default=os.environ.get('SM_OUTPUT_DATA_DIR', './'))
+    parser.add_argument('--model_dir', type=str, default=os.environ.get('SM_MODEL_DIR', './'))
+    parser.add_argument('--train', type=str, default=os.environ.get('SM_CHANNEL_TRAIN', './train'))
+    parser.add_argument('--val', type=str, default=os.environ.get('SM_CHANNEL_VAL', './val'))
+    parser.add_argument('--test', type=str, default=os.environ.get('SM_CHANNEL_TEST', './test'))
 
     args = parser.parse_args()
 
+    print(args)
+
     # Define the transformations
     transform = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.ToTensor(),
-        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-    ])
+    transforms.Resize((224, 224)),
+    transforms.Lambda(lambda image: image.convert("RGB") if image.mode != "RGB" else image),
+    transforms.ToTensor(),
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+])
+
 
     # Create the datasets and DataLoaders
     train_data = AestheticDataset(args.train, transform)
@@ -101,3 +104,4 @@ if __name__ == '__main__':
 
     # Save the model to the output directory specified by SageMaker
     torch.save(vit_model.state_dict(), os.path.join(args.model_dir, 'model.pth'))
+
