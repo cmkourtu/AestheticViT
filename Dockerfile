@@ -15,5 +15,9 @@ COPY src/ /app
 # Install any needed packages specified in requirements.txt
 RUN pip install --no-cache-dir -r /app/requirements.txt
 
-# Run sagemaker_train_vit.py when the container launches
-ENTRYPOINT ["python", "/app/sagemaker_train_vit.py"]
+# Copy the training script to the location expected by SageMaker
+COPY src/sagemaker_train_vit.py /opt/ml/code/sagemaker_train_vit.py
+
+
+# Set the training script as the entrypoint
+ENV SAGEMAKER_PROGRAM sagemaker_train_vit.py
