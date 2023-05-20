@@ -17,6 +17,7 @@ build/
 .vscode/
 .idea/
 *.swp
+*.DS_Store
 
 # Data
 data/AVA_dataset/
