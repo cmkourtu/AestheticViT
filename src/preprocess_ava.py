@@ -6,8 +6,8 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 
 # Set the paths to the AVA dataset and the AVA txt file
-ava_dataset_path = 'path/to/AVA_dataset_folder'
-ava_txt_file = 'path/to/AVA.txt'
+ava_dataset_path = 'data/AVA_dataset/images'
+ava_txt_file = 'data/AVA_dataset/AVA.txt'
 
 # Read the AVA txt file
 ava_data = pd.read_csv(ava_txt_file, delimiter=' ', header=None)
@@ -35,16 +35,24 @@ def preprocess_and_save_images(image_ids, scores, dataset_path, output_path):
         image_path = os.path.join(dataset_path, f'{image_id}.jpg')
         output_image_path = os.path.join(output_path, f'{image_id}.jpg')
         
-        # Resize the image
-        image = Image.open(image_path)
-        image = image.resize((224, 224), Image.ANTIALIAS)
-        
-        # Save the preprocessed image
-        image.save(output_image_path)
+        # Check if the image file exists
+        if not os.path.exists(image_path):
+            print(f"File {image_path} not found.")
+            continue
 
-        # Store the image aesthetic score
-        with open(os.path.join(output_path, 'scores.txt'), 'a') as f:
-            f.write(f'{image_id} {score}\n')
+        # Resize the image
+        try:
+            image = Image.open(image_path)
+            image = image.resize((224, 224), Image.ANTIALIAS)
+            
+            # Save the preprocessed image
+            image.save(output_image_path)
+
+            # Store the image aesthetic score
+            with open(os.path.join(output_path, 'scores.txt'), 'a') as f:
+                f.write(f'{image_id} {score}\n')
+        except Exception as e:
+            print(f"Error processing image {image_path}: {e}")
 
 # Preprocess and save the train, validation, and test images
 preprocess_and_save_images(train_image_ids, train_scores, ava_dataset_path, 'AVA_preprocessed/train')
