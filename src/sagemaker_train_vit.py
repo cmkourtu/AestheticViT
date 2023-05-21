@@ -10,10 +10,11 @@ from timm import create_model
 
 
 class AestheticDataset(Dataset):
-    def __init__(self, dir, transform=None):
+    def __init__(self, dir, transform=None, extensions=("jpg", "jpeg", "png", "bmp", "tiff")):
         self.dir = dir
         self.transform = transform
-        self.image_paths = sorted([os.path.join(dir, img) for img in os.listdir(dir)])
+        self.extensions = extensions
+        self.image_paths = sorted([os.path.join(dir, img) for img in os.listdir(dir) if img.lower().endswith(self.extensions)])
 
     def __len__(self):
         return len(self.image_paths)
@@ -56,7 +57,7 @@ if __name__ == '__main__':
     # Create the datasets and DataLoaders
     train_data = AestheticDataset(args.train, transform)
     val_data = AestheticDataset(args.val, transform)
-    
+
     if os.path.exists(args.test):
         print("Test directory found.")
         test_data = AestheticDataset(args.test, transform)
