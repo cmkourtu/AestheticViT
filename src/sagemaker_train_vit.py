@@ -53,15 +53,21 @@ if __name__ == '__main__':
     transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-
     # Create the datasets and DataLoaders
     train_data = AestheticDataset(args.train, transform)
     val_data = AestheticDataset(args.val, transform)
-    test_data = AestheticDataset(args.test, transform)
+    
+    if os.path.exists(args.test):
+        print("Test directory found.")
+        test_data = AestheticDataset(args.test, transform)
+        test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=False)
+    else:
+        print("Test directory not found.")
+
+
 
     train_loader = DataLoader(train_data, batch_size=args.batch_size, shuffle=True)
     val_loader = DataLoader(val_data, batch_size=args.batch_size, shuffle=False)
-    test_loader = DataLoader(test_data, batch_size=args.batch_size, shuffle=False)
 
     # Load the pretrained ViT model
     vit_model = create_model('vit_base_patch16_224', pretrained=True)
@@ -104,4 +110,5 @@ if __name__ == '__main__':
 
     # Save the model to the output directory specified by SageMaker
     torch.save(vit_model.state_dict(), os.path.join(args.model_dir, 'model.pth'))
+
 
