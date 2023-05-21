@@ -27,3 +27,6 @@ data/AVA_preprocessed/
 *.pt
 *.pth
 *.tar
+.DS_Store
+*.jpg
+*.jpg
