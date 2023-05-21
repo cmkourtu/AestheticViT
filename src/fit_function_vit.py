@@ -5,7 +5,7 @@ from sagemaker.estimator import Estimator
 role = get_execution_role()
 session = sagemaker.Session()
 
-image = '397439799241.dkr.ecr.us-east-2.amazonaws.com/aestheticvit:latest' # The ECR URI of your Docker container
+image = '397439799241.dkr.ecr.us-east-2.amazonaws.com/aestheticvit:latest'
 
 estimator = Estimator(image_uri=image,
                       role=role,
@@ -19,5 +19,5 @@ estimator = Estimator(image_uri=image,
 
 s3_input_train = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/train', content_type='application/x-image')
 s3_input_validation = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/val', content_type='application/x-image')
-
-estimator.fit({'train': s3_input_train, 'validation': s3_input_validation})
+s3_input_test = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/test', content_type='application/x-image')
+estimator.fit({'train': s3_input_train, 'val': s3_input_validation, 'test': s3_input_test})
