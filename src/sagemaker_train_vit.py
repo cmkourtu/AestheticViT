@@ -16,6 +16,7 @@ class AestheticDataset(Dataset):
         self.extensions = extensions
         self.image_paths = sorted([os.path.join(dir, img) for img in os.listdir(dir) if img.lower().endswith(self.extensions)])
 
+
     def __len__(self):
         return len(self.image_paths)
 
