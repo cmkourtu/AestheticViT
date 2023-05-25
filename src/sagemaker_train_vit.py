@@ -63,6 +63,9 @@ if __name__ == '__main__':
     val_loader = DataLoader(val_data, batch_size=args.batch_size, shuffle=False)
     print("Datasets loaded")
 
+    print("Total training batches: ", len(train_loader))
+    print("Total validation batches: ", len(val_loader))
+
     if os.path.exists(args.test):
         print("Test directory found.")
         test_data = AestheticDataset(args.test, transform)
@@ -107,7 +110,8 @@ if __name__ == '__main__':
         # Training
         vit_model.train()
         train_loss = 0
-        for images, labels in train_loader:
+        for batch_index, (images, labels) in enumerate(train_loader):
+            print(f"Training: epoch {epoch+1}, batch {batch_index+1}/{len(train_loader)}")
             images, labels = images.to(device), labels.to(device)
             optimizer.zero_grad()
             predictions = vit_model(images).squeeze()
@@ -120,7 +124,8 @@ if __name__ == '__main__':
         vit_model.eval()
         val_loss = 0
         with torch.no_grad():
-            for images, labels in val_loader:
+            for batch_index, (images, labels) in enumerate(val_loader):
+                print(f"Validating: epoch {epoch+1}, batch {batch_index+1}/{len(val_loader)}")
                 images, labels = images.to(device), labels.to(device)
                 predictions = vit_model(images).squeeze()
                 loss = loss_function(predictions, labels)
