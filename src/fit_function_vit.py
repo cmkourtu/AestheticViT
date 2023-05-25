@@ -10,7 +10,8 @@ image = '397439799241.dkr.ecr.us-east-2.amazonaws.com/aestheticvit:latest'
 estimator = Estimator(image_uri=image,
                       role=role,
                       instance_count=1,
-                      instance_type='ml.m5.xlarge',  # Don't forget to complete the instance type
+                      instance_type='ml.p3.8xlarge',  # Updated to 'p3.8xlarge'
+                      max_run=86400,               # Maximum training time in seconds
                       hyperparameters={
                           'epochs': 10,
                           'lr': 0.01,
@@ -20,4 +21,5 @@ estimator = Estimator(image_uri=image,
 s3_input_train = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/train', content_type='application/x-image')
 s3_input_validation = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/val', content_type='application/x-image')
 s3_input_test = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/test', content_type='application/x-image')
+
 estimator.fit({'train': s3_input_train, 'val': s3_input_validation, 'test': s3_input_test})
