@@ -16,8 +16,8 @@ estimator = Estimator(image_uri=image,
                           'epochs': 10,
                           'lr': 0.01,
                           'batch_size': 64,
-                      })
-metric_definitions=[
+                      },
+                      metric_definitions=[
                           {'Name': 'Train Loss', 'Regex': '.*"metric": "Train Loss", "value": ([0-9\\.]+),.*'},
                           {'Name': 'Validation Loss', 'Regex': '.*"metric": "Validation Loss", "value": ([0-9\\.]+),.*'}
                       ])
