@@ -2,6 +2,7 @@ on:
   push:
     paths:
       - '*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -32,4 +33,3 @@ jobs:
         docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
         echo "IMAGE_URI=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_ENV
-
