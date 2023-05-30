@@ -132,7 +132,7 @@ if __name__ == '__main__':
                 val_loss += loss.item()
 
         # Print epoch losses
-        print(f'Epoch {epoch+1}/{args.epochs}, Train Loss: {train_loss/len(train_loader)}, Val Loss: {val_loss/len(val_loader)}')
+        print(f'Epoch {epoch+1}/{args.epochs}, Train Loss: {train_loss/len(train_loader)}, Validation Loss: {val_loss/len(val_loader)}')
 
         # Save a checkpoint after each epoch
         print("Saving checkpoint...")
