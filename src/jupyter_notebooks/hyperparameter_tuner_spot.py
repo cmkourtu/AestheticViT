@@ -24,7 +24,7 @@ estimator = Estimator(image_uri=image,
 
 # Define the hyperparameter ranges
 hyperparameter_ranges = {
-    'lr': ContinuousParameter(0.000001, 0.0001),
+    'lr': ContinuousParameter(0.01, 32),
     'batch_size': IntegerParameter(32, 64),
     'epochs': IntegerParameter(5, 10)
 }
