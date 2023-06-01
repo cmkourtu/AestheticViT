@@ -18,9 +18,9 @@ estimator = Estimator(image_uri=image,
                           'batch_size': 64,
                       },
                       metric_definitions=[
-                          {'Name': 'Train Loss', 'Regex': '.*"metric": "Train Loss", "value": ([0-9\\.]+),.*'},
-                          {'Name': 'Validation Loss', 'Regex': '.*"metric": "Validation Loss", "value": ([0-9\\.]+),.*'}
-                      ])
+                            {'Name': 'Train Loss', 'Regex': '.*Train Loss: ([0-9\\.]+),.*'},
+                            {'Name': 'Validation Loss', 'Regex': '.*Validation Loss: ([0-9\\.]+).*'}]
+                     )
 
 s3_input_train = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/train', content_type='application/x-image')
 s3_input_validation = sagemaker.inputs.TrainingInput(s3_data='s3://kourtutest/val', content_type='application/x-image')
