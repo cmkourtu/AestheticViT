@@ -14,8 +14,8 @@ estimator = Estimator(image_uri=image,
                       instance_type='ml.g4dn.2xlarge',
                       max_run=86400,
                       use_spot_instances=True,  # use spot instances
-                      max_wait=86400,  # Maximum waiting time
-                      checkpoint_s3_uri='s3://your_bucket/checkpoints/',  # S3 Uri for storing checkpoints
+                      max_wait=200000,  # Maximum waiting time
+                      checkpoint_s3_uri='s3://kourtutest/checkpoints/',  # S3 Uri for storing checkpoints
                       hyperparameters={
                           'epochs': 10,
                           'lr': 0.0006994586775569564,
