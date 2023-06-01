@@ -8,6 +8,10 @@ from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
 from timm import create_model
+import torch.optim.lr_scheduler as lr_scheduler
+
+
+
 
 class AestheticDataset(Dataset):
     def __init__(self, dir, transform=None, extensions=("jpg", "jpeg", "png", "bmp", "tiff")):
@@ -83,6 +87,9 @@ if __name__ == '__main__':
     # Set the loss function, optimizer, and learning rate
     loss_function = nn.MSELoss()
     optimizer = optim.Adam(vit_model.parameters(), lr=args.lr)
+    scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=5, factor=0.1)
+
+
 
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     vit_model.to(device)
@@ -132,7 +139,10 @@ if __name__ == '__main__':
                 val_loss += loss.item()
 
         # Print epoch losses
-        print(f'Epoch {epoch+1}/{args.epochs}, Train Loss: {train_loss/len(train_loader)}, Val Loss: {val_loss/len(val_loader)}')
+        print(f'Epoch {epoch+1}/{args.epochs}, Train Loss: {train_loss/len(train_loader)}, Validation Loss: {val_loss/len(val_loader)}')
+
+        # Update the learning rate
+        scheduler.step(val_loss)
 
         # Save a checkpoint after each epoch
         print("Saving checkpoint...")

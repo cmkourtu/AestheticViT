@@ -19,7 +19,7 @@ pip install torch torchvision Pillow pandas scikit-learn
 
 ## Dataset
 
-The project uses the AVA dataset, which can be downloaded from the official website or a trusted source. The dataset should be placed in the data/AVA_dataset folder with the following structure:
+The project uses the AVA dataset ,swhich can be downloaded from the official website or a trusted source. The dataset should be placed in the data/AVA_dataset folder with the following structure:
 
 ```objectivec
 data/AVA_dataset/
