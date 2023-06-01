@@ -87,7 +87,7 @@ if __name__ == '__main__':
     # Set the loss function, optimizer, and learning rate
     loss_function = nn.MSELoss()
     optimizer = optim.Adam(vit_model.parameters(), lr=args.lr)
-    scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=10, factor=0.1)
+    scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=5, factor=0.1)
 
 
 
