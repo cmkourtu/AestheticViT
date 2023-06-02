@@ -77,6 +77,10 @@ if __name__ == '__main__':
     else:
         print("Test directory not found.")
 
+    # Load the pretrained ViT model
+    print("Loading ViT model...")
+    vit_model = create_model('vit_base_patch16_224', pretrained=True)    
+        
     # Detect if we have a GPU available and if multiple GPUs are available
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     if torch.cuda.device_count() > 1:
