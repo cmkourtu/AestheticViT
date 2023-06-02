@@ -77,23 +77,20 @@ if __name__ == '__main__':
     else:
         print("Test directory not found.")
 
-    # Load the pretrained ViT model
-    print("Loading ViT model...")
-    vit_model = create_model('vit_base_patch16_224', pretrained=True)
+    # Detect if we have a GPU available and if multiple GPUs are available
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    if torch.cuda.device_count() > 1:
+        print("Using", torch.cuda.device_count(), "GPUs!")
+        vit_model = nn.DataParallel(vit_model)
 
-    # Modify the model for the regression task
-    vit_model.head = nn.Linear(vit_model.head.in_features, 1)
+    # Move the model to the appropriate device
+    vit_model = vit_model.to(device)
+    print("Model loaded to device: ", device)
 
     # Set the loss function, optimizer, and learning rate
-    loss_function = nn.MSELoss()
-    optimizer = optim.Adam(vit_model.parameters(), lr=args.lr)
+    loss_function = nn.MSELoss().to(device) # Move loss function to the correct device
+    optimizer = optim.Adam(vit_model.parameters(), lr=args.lr) 
     scheduler = lr_scheduler.ReduceLROnPlateau(optimizer, 'min', patience=5, factor=0.1)
-
-
-
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    vit_model.to(device)
-    print("Model loaded to device: ", device)
 
     # Define a path for saving/loading checkpoints
     checkpoint_dir = '/opt/ml/checkpoints'  # Amazon SageMaker writes checkpoint data into this directory
