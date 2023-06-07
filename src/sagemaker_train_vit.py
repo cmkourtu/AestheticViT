@@ -79,7 +79,11 @@ if __name__ == '__main__':
 
     # Load the pretrained ViT model
     print("Loading ViT model...")
-    vit_model = create_model('vit_base_patch16_224', pretrained=True)    
+    vit_model = create_model('vit_base_patch16_224', pretrained=True)
+
+    # Modify the output layer of the model
+    num_ftrs = vit_model.head.in_features
+    vit_model.head = nn.Linear(num_ftrs, 1)    
         
     # Detect if we have a GPU available and if multiple GPUs are available
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
