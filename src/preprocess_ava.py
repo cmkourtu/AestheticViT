@@ -1,8 +1,7 @@
 import os
-import random
-import shutil
-from PIL import Image
+import numpy as np
 import pandas as pd
+from PIL import Image
 from sklearn.model_selection import train_test_split
 
 # Set the paths to the AVA dataset and the AVA txt file
@@ -14,11 +13,17 @@ ava_data = pd.read_csv(ava_txt_file, delimiter=' ', header=None)
 
 # Extract the image IDs and aesthetic scores
 image_ids = ava_data.iloc[:, 1].values
-aesthetic_scores = ava_data.iloc[:, 2:12].values.sum(axis=1)
+scores = ava_data.iloc[:, 2:12].values
+
+# Define the weights (score values from 1 to 10)
+weights = np.arange(1, 11)
+
+# Compute the weighted average of the scores
+weighted_aesthetic_scores = np.average(scores, axis=1, weights=weights)
 
 # Split the dataset into train, validation, and test sets
 train_image_ids, test_image_ids, train_scores, test_scores = train_test_split(
-    image_ids, aesthetic_scores, test_size=0.2, random_state=42
+    image_ids, weighted_aesthetic_scores, test_size=0.2, random_state=42
 )
 train_image_ids, val_image_ids, train_scores, val_scores = train_test_split(
     train_image_ids, train_scores, test_size=0.25, random_state=42
